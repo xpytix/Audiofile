@@ -42,7 +42,7 @@ The diagram represents a generic base for web stores. The diagram was created us
 ## Admin when is login, can see all orders. When get payment, admin send a product
 
 ![GitHub Logo](https://github.com/xpytix/Audiofile/blob/master/read/admin_zamowienia.PNG)
-![GitHub Logo](https://github.com/xpytix/Audiofile/blob/master/read/ADMIN_Nowe_zrealizowane.png)
+
 
 
 
