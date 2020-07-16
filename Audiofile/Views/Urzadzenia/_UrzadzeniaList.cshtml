@@ -1,0 +1,24 @@
+﻿@model IEnumerable<Audiofile.Models.Urzadzenie>
+@using Audiofile.Infrastructure
+
+    
+            @foreach (var urzadzenie in Model)
+            {
+                <div class="col-lg-4 col-md-6 mb-4">
+
+                    <div class="card h-100">
+                        <a  href="@Url.Action("Szczegoly", "Urzadzenia", new { id = urzadzenie.UrzadzenieId})"><img class="card-img-top" src="@Url.UrzadzeniaIkonySciezka(urzadzenie.NazwaPlikuObrazka)" alt=""></a>
+                        <div class="card-body">
+                            <a class="dodajDoKoszykaLink" href="@Url.Action("DodajDoKoszyka", "Koszyk", new { id = urzadzenie.UrzadzenieId })"> Dodaj do koszyka</a>
+                            <h4 class="card-title">
+                                @urzadzenie.NazwaUrzadzenia - @urzadzenie.ProducentUrzadzenia
+                            </h4>
+                            <h5>@urzadzenie.CenaUrzadzenia</h5>
+                            <p class="card-text"> @urzadzenie.OpisUrzadzenia</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+                        </div>
+                    </div>
+                </div>
+             }

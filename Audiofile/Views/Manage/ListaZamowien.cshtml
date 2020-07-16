@@ -1,0 +1,118 @@
+﻿@model IEnumerable<Audiofile.Models.Zamowienie>
+@{
+    ViewBag.Title = "ListaZamowien";
+    Layout = "~/Views/Shared/_ManageLayout.cshtml";
+}
+
+<div class="container" style="margin-top: 45px">
+
+    <div class="row">
+        <h2 class="manageHeader">Twoje zamówienia</h2>
+        <div>
+            @if (Model.Any())
+            {
+                <table id="zamowienia-table">
+
+                    @foreach (var zamowienie in Model)
+                    {
+                        <tr @if (zamowienie.StanZamowienia == Audiofile.Models.StanZamowienia.Nowe) { <text> class="noweZamowienie" </text> }>
+                            <td>
+                                <strong>Nr zamówienia: </strong>@zamowienie.ZamowienieID
+                            </td>
+                            <td>
+                                <strong>Data: </strong>
+                                @zamowienie.DataDodania.ToString("dd-MM-yyyy")
+                            </td>
+                            <td>
+                                <strong>Stan: </strong><br />
+
+                                @if (ViewBag.UserIsAdmin)
+                                {
+                                    using (Html.BeginForm("ZmianaStanuZamowienia", "Manage"))
+                                    {
+                                        @Html.HiddenFor(o => zamowienie.ZamowienieID)
+                                        @Html.EnumDropDownListFor(o => zamowienie.StanZamowienia, new { @class = "StanZamowieniaZmien" }) }
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(o => zamowienie.StanZamowienia)}
+                            </td>
+                            <td>
+                                <strong>Dane wysyłkowe:</strong><br />
+                                @zamowienie.Imie @zamowienie.Nazwisko<br />
+                                @zamowienie.Adres<br />
+                                @zamowienie.KodPocztowy @zamowienie.Miasto<br />
+                            </td>
+                            <td>
+                                <strong>Uwagi: </strong><br />
+                                @zamowienie.Komentarz
+                            </td>
+                            <td>
+                                <strong>Łączny koszt:</strong> @zamowienie.WartoscZamownia zł
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <section>
+                                    <ul class="TrzyKolumnyList duzaListaKursy-bottom">
+
+                                        @foreach (var pozycjaZamowienia in zamowienie.PozycjeZamowienia)
+                                        {
+                                            <li>
+                                                <article>
+                                                    <a class="kursSzczegolyLink"  href="@Url.Action("Szczegoly", "Urzadzenia", new { id = pozycjaZamowienia.UrzadzenieId })">
+                                                        <img class="urzadzenie" style="width: 75px; height:75px;" src="@Url.Content("~/Content/Images/Urzadzenia/" + pozycjaZamowienia.urzadzenie.NazwaPlikuObrazka)" />
+                                                        <p>
+                                                            @pozycjaZamowienia.urzadzenie.NazwaUrzadzenia - @pozycjaZamowienia.urzadzenie.ProducentUrzadzenia<br />
+                                                            <strong>sztuk: @pozycjaZamowienia.Ilosc, łącznie: @(pozycjaZamowienia.Ilosc * @pozycjaZamowienia.CennaZakupu)  zł</strong>
+                                                        </p>
+                                                    </a>
+                                                </article>
+                                            </li>
+                                        }
+                                    </ul>
+                                </section>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6"></td>
+                        </tr>
+                        <!-- nastepne zamowienie -->}
+                </table> }
+            else
+            {
+                <div style="text-align: center; margin-top: 50px; margin-bottom: 50px;">
+                    Brak zamówień.
+                </div>}
+
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <script src="~/Scripts/jquery-2.2.1.js"></script>
+
+    <script>
+    $(".StanZamowieniaZmien").on('change', function (e) {
+        //e.preventDefault();
+
+        var f = $(this.form);
+        var tr = f.closest("tr");
+        var action = f.attr("action");
+        var serializedForm = f.serialize();
+
+        $.post(action, serializedForm).done(function (data) {
+            if (data == '@Audiofile.Models.StanZamowienia.Nowe.ToString()') {
+                tr.addClass("noweZamowienie")
+            }
+            else {
+                tr.removeClass("noweZamowienie");
+            }
+          });
+    });
+    </script>
+}

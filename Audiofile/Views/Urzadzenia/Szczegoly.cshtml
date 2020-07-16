@@ -1,0 +1,75 @@
+﻿@model Audiofile.Models.Urzadzenie
+@using Audiofile.Infrastructure
+@{
+    ViewBag.Title = "Szczegoly";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Page Content -->
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-lg-3">
+            @Html.Action("KategorieMenu")
+
+        </div>
+        <!-- /.col-lg-3 -->
+
+        <class class="col-lg-9">
+
+
+            <div class="left-pattern"></div>
+
+            <div class="row">
+                <div id="KategorieListPrawaSekcja">
+
+                    <section id="SekcjaKurs">
+                        <div id="KursLewa">
+                            <img src="@Url.UrzadzeniaIkonySciezka(Model.NazwaPlikuObrazka)" />
+                        </div>
+                        <div id="KursPrawa">
+                            <div id="KursNazwa">
+                                <h1>
+                                    @Model.NazwaUrzadzenia
+                                </h1>
+                                <h2>
+                                    @Model.ProducentUrzadzenia
+                                </h2>
+                            </div>
+                            <div id="KursCena">
+                                <div>
+                                    @string.Format("{0:0.##}", Model.CenaUrzadzenia)<span>PLN</span>
+                                </div>
+                                <a class="dodajDoKoszykaLink" href="@Url.Action("DodajDoKoszyka", "Koszyk", new { id = Model.UrzadzenieId })"> Dodaj do koszyka</a>
+                            </div>
+                            <div id="KursOpis">
+                                @Model.OpisUrzadzenia
+                            </div>
+                            <div id="KursInfo">
+                                @Model.OpisSkrocony
+                            </div>
+                            
+                        </div>
+       
+                    </section>
+                </div>
+
+
+            </div>
+            <!-- /.row -->
+
+        </class>
+        <!-- /.col-lg-9 -->
+
+    </div>
+    <!-- /.row -->
+
+</div>
+<!-- /.container -->
+
+
+
+
+
+

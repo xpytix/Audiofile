@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Audiofile.Models.Kategoria>
+@using Audiofile.Infrastructure;
+
+
+
+ 
+            <div class="title">
+                <h1 style="font-size: 30px; color: #003941" class="my-4">Audiofile Store</h1>
+            </div>
+
+            <div class="list-group">
+                <a style="color: white;" class="list-group-item list-group-item-action active">
+                    Kategorie
+                </a>
+                @foreach (var kategoria in Model)
+                 {
+                    <a href="@Url.Action("Lista", "Urzadzenia", new { nazwaKategori = kategoria.NazwaKategorii.ToLower() })" 
+                       class="list-group-item list-group-item-action">@kategoria.NazwaKategorii </a>
+                    
+                 }
+            </div>
+
+        <!-- /.col-lg-3 -->

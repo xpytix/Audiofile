@@ -1,0 +1,51 @@
+﻿
+@{
+    ViewBag.Title = "_RightSectionayout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-lg-3">
+            @Html.Action("KategorieMenu", "Urzadzenia")
+
+        </div>
+        <!-- /.col-lg-3 -->
+
+        <class class="col-lg-9" style="margin-top:69px;">
+
+
+            <div class="left-pattern"></div>
+
+            <div class="row">
+                <div id="KategorieListPrawaSekcja">
+
+                    <section class="SekcjaKoszyk">
+                        <div class="SekcjaHeader" style="margin-bottom: 0px;">
+                            <h1>
+                                @RenderSection("SectionTitle", required: false)
+                            </h1>
+                        </div>
+                        @RenderBody()
+                    </section>
+                </div>
+
+
+            </div>
+            <!-- /.row -->
+
+        </class>
+        <!-- /.col-lg-9 -->
+
+    </div>
+    <!-- /.row -->
+
+</div>
+@section Scripts
+{
+    @RenderSection("Scripts", required: false)
+}

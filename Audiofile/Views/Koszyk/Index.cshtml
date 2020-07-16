@@ -1,0 +1,108 @@
+﻿@model Audiofile.ViewModels.KoszykViewModel
+
+@using Audiofile.Infrastructure
+@{
+    ViewBag.Title = "Koszyk";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    </head>
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-lg-3">
+            @Html.Action("KategorieMenu", "Urzadzenia")
+
+        </div>
+        <!-- /.col-lg-3 -->
+        <class class="col-lg-9" style="margin-top:69px;">
+             
+
+            <div class="left-pattern"></div>
+
+            <div class="row">
+                <section class="SekcjaKoszyk">
+                    <div class="SekcjaHeader" style="margin-bottom: 0px;">
+                        <h1>Twój koszyk</h1>
+                    </div>
+
+                    <table id="koszykTabela">
+                        @foreach (var pozycjaKoszyka in Model.PozycjeKoszyka)
+                        {
+                            <tr id="koszyk-wiersz-@pozycjaKoszyka.Urzadzenie.UrzadzenieId">
+
+                                <td>
+                                    <a href="@Url.Action("Szczegoly", "Urzadzenia", new { id = pozycjaKoszyka.Urzadzenie.UrzadzenieId })">
+                                        <img style="width:200px; height: 200px;" src="@Url.Content("~/Content/Images/Urzadzenia/" + pozycjaKoszyka.Urzadzenie.NazwaPlikuObrazka)" />
+                                    </a>
+
+                                    <a href="@Url.Action("Szczegoly", "Urzadzenia", new { id = pozycjaKoszyka.Urzadzenie.UrzadzenieId })">@pozycjaKoszyka.Urzadzenie.NazwaUrzadzenia</a>
+                                    Ilość: <span id="koszyk-ilosc-pozycji-@pozycjaKoszyka.Urzadzenie.UrzadzenieId">@pozycjaKoszyka.Ilosc    Cena : @String.Format("{0:0.##}", pozycjaKoszyka.Wartosc)zł</span>
+                                </td>
+                                <td><a class="usunUrzadzenie" data-id="@pozycjaKoszyka.Urzadzenie.UrzadzenieId" href="#">Usuń</a></td>
+                            </tr>
+                        }
+
+
+                    </table>
+
+
+                    <div id="CenaCalkowita" style="">
+                        Razem: <span id="calkowita-cena-wartosc">@String.Format("{0:0.##}", Model.CenaCalkowita)</span> zł
+                    </div>
+                    <
+                    <div class="SekcjaPrzyciski">
+                        <a class="PrzyciskLink" href="@Url.Content("~/")">Kontynułuj zakupy</a>
+                        @if (Model.CenaCalkowita > 0)
+                        {
+                            <a class="PrzyciskLink" id="koszyk-button-zaplac" href="@Url.Action("Zaplac","Koszyk")">Zapłać</a>}
+                    </div>
+                </section>
+
+
+            </div>
+            <!-- /.row -->
+
+        </class>
+        <!-- /.col-lg-9 -->
+
+    </div>
+    <!-- /.row -->
+
+</div>
+@section Scripts{
+
+    <script type="text/javascript">
+        $(function () {
+            $(".usunUrzadzenie").click(function () {
+
+                var recordDoUsuniecia = $(this).attr("data-id");
+
+                if (recordDoUsuniecia != '') {
+                    $.post("/Koszyk/UsunZKoszyka", { "urzadzenieId": recordDoUsuniecia },
+                        function (response) {
+                            if (response.IloscPozycjiUsuwanej == 0) {
+                                $('#koszyk-wiersz-' + response.IdPozycjiUsuwanej).fadeOut('slow');
+
+                            }
+                            else
+
+                            {
+                                $('#koszyk-ilosc-pozycji-' + response.IdPozycjiUsuwanej).text(response.IloscPozycjiUsuwanej);
+                            }
+                            if (response.KoszykIloscPozycji == 0) {
+                                $('#koszyk-button-zaplac').addClass('hidden');
+                                $('#CenaCalkowita').addClass('invisible');
+                            }
+                            $('#calkowita-cena-wartosc').text(response.KoszykCenaCalkowita);
+
+                        });
+                    return false;
+                }
+            });
+        });
+    </script>
+}

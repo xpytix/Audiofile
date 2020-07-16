@@ -1,0 +1,38 @@
+﻿
+@{
+    ViewBag.Title = "Lista";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <!-- Page Content -->
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-lg-3">
+              @Html.Action("KategorieMenu")
+
+            </div>
+            <!-- /.col-lg-3 -->
+
+            <class class="col-lg-9" style="margin-top:69px;">
+
+                
+                <div class="left-pattern"></div>
+
+                <div class="row">
+                    @Html.Partial("_UrzadzeniaList")
+                  
+
+                </div>
+                <!-- /.row -->
+
+            </class>
+            <!-- /.col-lg-9 -->
+
+        </div>
+        <!-- /.row -->
+
+    </div>
+    <!-- /.container -->
